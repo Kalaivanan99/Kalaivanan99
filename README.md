@@ -1,10 +1,22 @@
-- 👋 Hi, I’m @Kalaivanan99
-- 👀 I’m interested in 
-- 🌱 I’m currently learning python
-- 💞️ I’m looking to collaborate on ...
-- 📫 How to reach me ...
+import threading, time
 
-<!---
-Kalaivanan99/Kalaivanan99 is a ✨ special ✨ repository because its `README.md` (this file) appears on your GitHub profile.
-You can click the Preview link to take a look at your changes.
---->
+class ResumableTimer:
+    def __init__(self, timeout, callback):
+        self.timeout = timeout
+        self.callback = callback
+        self.timer = threading.Timer(timeout, callback)
+        self.startTime = time.time()
+
+    def start(self):
+        self.timer.start()
+
+    def pause(self):
+        self.timer.cancel()
+        self.pauseTime = time.time()
+
+    def resume(self):
+        self.timer = threading.Timer(
+            self.timeout - (self.pauseTime - self.startTime),
+            self.callback)
+
+        self.timer.start()
